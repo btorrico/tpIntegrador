@@ -142,6 +142,22 @@ public class Producto {
 				+ ", imagen=" + imagen + "]";
 	}
 
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public CategoriaDeProducto getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(CategoriaDeProducto categoria) {
+		this.categoria = categoria;
+	}
+
 	
 	
 }

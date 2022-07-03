@@ -137,4 +137,28 @@ public class Vendedor {
 	}
 
 
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+
+
+	public void setTipoUsuario(TipoUsuario tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
+
+
+	public void setOrdenesDeCompra(List<OrdenDeCompra> ordenesDeCompra) {
+		this.ordenesDeCompra = ordenesDeCompra;
+	}
+
+
 }

@@ -70,7 +70,7 @@ public class  VendedorControllerComplement {
 		
 		vendedor.setNombre(detallesVendedor.getNombre());
 		vendedor.setApellido(detallesVendedor.getApellido());
-		//vendedor.setDireccion(detallesVendedor.getDireccion());
+		vendedor.setDireccion(detallesVendedor.getDireccion());
 		vendedor.setDocumento(detallesVendedor.getDocumento());
 		
 		Vendedor vendedorActualizado = repoVendedor.save(vendedor);

@@ -173,4 +173,34 @@ public class Cliente {
 
 
 
+	public Integer getId() {
+		return id;
+	}
+
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
+
+	public TipoUsuario getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+
+
+	public void setTipoUsuario(TipoUsuario tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
+
+
+	public void setComprasRealizadas(List<OrdenDeCompra> comprasRealizadas) {
+		this.comprasRealizadas = comprasRealizadas;
+	}
+
+
+
 }
