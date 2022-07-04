@@ -89,7 +89,7 @@
 </ul>
 </div>
 
-<h1>Front End </h1>
+<h1>Front End  --> (Se conecta con Endpoints de heroku)</h1>
 <h3>Codigo: https://github.com/btorrico/tpIntegrador-Front</h3>
 <h1> Login y  distintas pantallas </h1>
 
