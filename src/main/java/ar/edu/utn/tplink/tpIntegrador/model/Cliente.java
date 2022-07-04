@@ -85,6 +85,20 @@ public class Cliente {
 
 
 
+	public Cliente(String nombre, String apellido, String documento, String direccion, String telefono,
+			boolean esMiembro, List<OrdenDeCompra> comprasRealizadas) {
+		super();
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.documento = documento;
+		this.direccion = direccion;
+		this.telefono = telefono;
+		this.esMiembro = esMiembro;
+		this.comprasRealizadas = comprasRealizadas;
+	}
+
+
+
 	public Cliente() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -145,15 +159,6 @@ public class Cliente {
 	}
 
 
-	public void agregarACarrito(ItemDeCompra item) throws SinStockException {
-		carritoDeCompras.agregarProducto(item);
-	}
-
-	public void finalizarCompra() {
-		OrdenDeCompra orden = carritoDeCompras.terminarCompra();
-		comprasRealizadas.add(orden);
-		carritoDeCompras.vaciarCarrito();
-	}
 
 	public String getDireccion() {
 		return direccion;

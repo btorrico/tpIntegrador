@@ -45,17 +45,17 @@ public class ProductoControllerComplement {
 		return new ResponseEntity(repoProveedor.findAll(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/productos/{id}")
 	public ResponseEntity<Producto> obtenerProducto(@PathVariable Integer id){
 		return new ResponseEntity(repoProducto.findById(id), HttpStatus.OK);
 	}
 	
-	@PostMapping("/crear")
+	@PostMapping("/productos")
 	public ResponseEntity<Producto> crearProducto(@RequestBody Producto producto) {
 		return new ResponseEntity(repoProducto.save(producto), HttpStatus.CREATED);
 	}
 	
-	@PutMapping("actualizar/{id}")
+	@PutMapping("/productos/{id}")
 	public ResponseEntity<Producto> actualizarProducto(@PathVariable Integer id, @RequestBody Producto producto) {
 		Optional<Producto> productoEncontrado = repoProducto.findById(id);
 		if(productoEncontrado == null) {
@@ -72,8 +72,8 @@ public class ProductoControllerComplement {
 		}
 	}
 	
-	@DeleteMapping("eliminar/{id}")
-	public ResponseEntity<?> eliminarProducto(@PathVariable Integer id) {
+	@DeleteMapping("/productos/{id}")
+	public ResponseEntity<Producto> eliminarProducto(@PathVariable Integer id) {
 		repoProducto.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+
 @Entity
 public class ItemDeCompra {
 	@Id
@@ -63,6 +64,10 @@ public class ItemDeCompra {
 	@Override
 	public String toString() {
 		return "ItemCarrito [producto=" + producto + ", cantidad=" + cantidad + "]";
+	}
+	
+	public boolean mismoProveedor(Proveedor proveedor) {
+		return this.getProducto().getProveedor().equals(proveedor);
 	}
 
 }

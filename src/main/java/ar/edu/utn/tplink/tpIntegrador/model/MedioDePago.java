@@ -1,37 +1,56 @@
 package ar.edu.utn.tplink.tpIntegrador.model;
-
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Entity
-public class MedioDePago extends Promocion {
-
-	private MetodoDePago metodo;
-	private double descuento;
-
-	public MedioDePago(MetodoDePago metodo, double descuento) {
+@DiscriminatorValue("3")
+public class MedioDePago extends Promocion{
+	@Enumerated(EnumType.STRING)
+	@Column(name = "metodoDePago")
+	private MetodoDePago metodoDePago;
+	private Double porcentaje;
+	
+	protected MedioDePago() {
 		super();
-		this.metodo = metodo;
-		this.descuento = descuento;
-	}
-
-	public MetodoDePago getMetodo() {
-		return metodo;
-	}
-
-	public void setMetodo(MetodoDePago metodo) {
-		this.metodo = metodo;
 	}
 	
-	public double getDescuento() {
-		return descuento;
+	public MedioDePago(MetodoDePago metodoDePago, double porcentaje) {
+		super();
+		this.metodoDePago = metodoDePago;
+		this.porcentaje = porcentaje;
 	}
 
-	public void setDescuento(double descuento) {
-		this.descuento = descuento;
+	@Override
+	public Double aplicar(CarritoDeCompra carritoDeCompra) {
+		if(carritoDeCompra.getMetodoDePago().equals(this.metodoDePago)) {
+			return carritoDeCompra.calcularPrecioTotalSinPromociones() * porcentaje;
+		}
+		return 0.0;
 	}
-	
-	public double descuento() {
-		return descuento;
+
+
+
+	public MetodoDePago getMetodoDePago() {
+		return metodoDePago;
+	}
+
+	public void setMetodoDePago(MetodoDePago metodoDePago) {
+		this.metodoDePago = metodoDePago;
+	}
+
+	public void setPorcentaje(Double porcentaje) {
+		this.porcentaje = porcentaje;
+	}
+
+	public Double getPorcentaje() {
+		return porcentaje;
+	}
+
+	public void setPorcentaje(double porcentaje) {
+		this.porcentaje = porcentaje;
 	}
 	
 }

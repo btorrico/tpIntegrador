@@ -11,7 +11,9 @@ import ar.edu.utn.tplink.tpIntegrador.app.DTO.CarritoDeCompraDTO;
 import ar.edu.utn.tplink.tpIntegrador.model.CarritoDeCompra;
 
 
-@RepositoryRestResource(path="carritos", excerptProjection = CarritoDeCompraDTO.class)
+//@RepositoryRestResource(path="carritos", excerptProjection = CarritoDeCompraDTO.class)
+@RepositoryRestResource(path="carritos")
+
 public interface ICarritoDeCompraRepository extends PagingAndSortingRepository<CarritoDeCompra, Integer>{
 	
 	Optional<CarritoDeCompra> findById(Integer id);

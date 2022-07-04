@@ -37,17 +37,17 @@ public class CarritoDeCompraControllerComplement2 {
 	@Autowired
 	IItemDeCompraRepository repoItemDeCompra;
 	
-	@Transactional
-	@RequestMapping(method = RequestMethod.POST, value="/clientes/{clienteId}/agregarACarrito")
-	public @ResponseBody String agregarACarrito(@PathVariable("clienteId") Integer clienteId, 
-			@RequestBody Integer itemId) {
+	//@Transactional
+//	@RequestMapping(method = RequestMethod.POST, value="/clientes/{clienteId}/agregarACarrito")
+	//public @ResponseBody String agregarACarrito(@PathVariable("clienteId") Integer clienteId, 
+//			@RequestBody Integer itemId) {
 		
-		Optional<Cliente> opcionalCliente = repoCliente.findById(clienteId);
-		if(opcionalCliente.isEmpty()) {
-			return "cliente no encontrado";
-		}
+		//Optional<Cliente> opcionalCliente = repoCliente.findById(clienteId);
+	//	if(opcionalCliente.isEmpty()) {
+		//	return "cliente no encontrado";
+	//	}
 		
-		Cliente cliente = opcionalCliente.get();
+	//	Cliente cliente = opcionalCliente.get();
 		
 //	
 //		Optional<CarritoDeCompra> opcionalCarritoDeCompra = ICarritoDeCompraRepository.findById(cliente);
@@ -59,22 +59,22 @@ public class CarritoDeCompraControllerComplement2 {
 //		
 		
 		
-		Optional<ItemDeCompra> opcionalItemDeCompra = repoItemDeCompra.findById(itemId);
-		if(opcionalItemDeCompra.isEmpty()) {
-			return "El item no fue encontrado";
-		}
+//		Optional<ItemDeCompra> opcionalItemDeCompra = repoItemDeCompra.findById(itemId);
+	//	if(opcionalItemDeCompra.isEmpty()) {
+		//	return "El item no fue encontrado";
+//		}
 		
-		ItemDeCompra itemDeCompra = opcionalItemDeCompra.get();
+	//	ItemDeCompra itemDeCompra = opcionalItemDeCompra.get();
 		
 		//------------------------------
-		try
-		{
-		cliente.agregarACarrito(itemDeCompra);
-		} catch(SinStockException ex) {
-			return "No contamos con Stock del item seleccionado";
-		}
+//		try
+		//{
+	//	cliente.agregarACarrito(itemDeCompra);
+//		} catch(SinStockException ex) {
+	//		return "No contamos con Stock del item seleccionado";
+//		}
 		//-------------------------------
-		return "ok";
-	}
+	//	return "ok";
+	//}
 }
 

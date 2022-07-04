@@ -12,7 +12,9 @@ import ar.edu.utn.tplink.tpIntegrador.model.OrdenDeCompra;
 
 
 
-@RepositoryRestResource(path="ordenes", excerptProjection = OrdenDeCompraDTO.class)
+//@RepositoryRestResource(path="ordenes", excerptProjection = OrdenDeCompraDTO.class)
+@RepositoryRestResource(path="ordenes")
+
 public interface IOrdenDeCompraRepository extends PagingAndSortingRepository<OrdenDeCompra, Integer>{
 	
 	Optional<OrdenDeCompra> findByFecha(LocalDate fecha);

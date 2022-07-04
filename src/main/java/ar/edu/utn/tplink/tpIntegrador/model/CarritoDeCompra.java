@@ -1,71 +1,55 @@
 package ar.edu.utn.tplink.tpIntegrador.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-
-import ar.edu.utn.tplink.tpIntegrador.excepciones.NoSePuedeAplicarCuponException;
-import ar.edu.utn.tplink.tpIntegrador.excepciones.SinStockException;
+import javax.persistence.OneToOne;
 
 @Entity
 public class CarritoDeCompra {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-
 	@OneToMany
-	private Collection<ItemDeCompra> itemsDeCompra;
-
-	private double subtotal;
-
+	@JoinColumn(name = "carritoDeCompra_id")
+	private Collection<ItemDeCompra> itemsCompras;
 	@ManyToMany
 	private Collection<Promocion> promociones;
-
-	public CarritoDeCompra(List<ItemDeCompra> itemsDeCompra) {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+	@Enumerated(EnumType.STRING)
+	@Column(name = "metodoDePago")
+	private MetodoDePago metodoDePago;
+	@OneToOne
+	private Cliente cliente;
+	
 	public CarritoDeCompra() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-
-	public CarritoDeCompra(Collection<ItemDeCompra> itemsDeCompra, double subtotal, Collection<Promocion> promociones) {
-		this.itemsDeCompra = itemsDeCompra;
-		this.subtotal = subtotal;
+	
+	public CarritoDeCompra(Collection<Promocion> promociones,
+			LocalDate fechaDeCompra, MetodoDePago metodoDePago,Cliente cliente) {
+		super();
+		this.itemsCompras = new ArrayList<>();
 		this.promociones = promociones;
+		this.metodoDePago = metodoDePago;
+		this.cliente=cliente;
 	}
-
-	public Integer getId() {
-		return id;
+	
+	public Collection<ItemDeCompra> getItemsCompras() {
+		return itemsCompras;
 	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public Collection<ItemDeCompra> getItemsDeCompra() {
-		return itemsDeCompra;
-	}
-
-	public void setItemsCarrito(Collection<ItemDeCompra> itemsCarrito) {
-		this.itemsDeCompra = itemsCarrito;
-	}
-
-	public double getSubtotal() {
-		return subtotal;
-	}
-
-	public void setSubtotal(double subtotal) {
-		this.subtotal = subtotal;
+	
+	public void setItemsCompras(Collection<ItemDeCompra> itemsCompras) {
+		this.itemsCompras = itemsCompras;
 	}
 
 	public Collection<Promocion> getPromociones() {
@@ -76,52 +60,43 @@ public class CarritoDeCompra {
 		this.promociones = promociones;
 	}
 
-	public void agregarProducto(ItemDeCompra item) throws SinStockException {
-		if (item.getProducto().getCantStock() < item.getCantidad()) {
-			throw new SinStockException("El producto se encuentra sin stock");
-		}
-		itemsDeCompra.add(item);
-		subtotal += item.precio();
+	public MetodoDePago getMetodoDePago() {
+		return metodoDePago;
 	}
 
-	public void quitarProducto(ItemDeCompra item) {
-		itemsDeCompra.remove(item);
-		subtotal -= item.precio();
+	public void setMetodoDePago(MetodoDePago medioDePago) {
+		this.metodoDePago = medioDePago;
+	}
+	
+	public Integer getId() {
+		return id;
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public double calcularPrecioTotalSinPromociones(){
+		return itemsCompras.stream().mapToDouble(x->x.precioTotalProducto()).sum();
+	}
+	
+	public double calcularPrecioTotalConPromociones(){
+		return this.calcularPrecioTotalSinPromociones()-promociones.stream().mapToDouble(x->x.aplicar(this)).sum();
+	}
+	
+	public void agregarItem(ItemDeCompra itemCompra) {
+		this.itemsCompras.add(itemCompra);
+	}
+	
 	public void agregarPromocion(Promocion promocion) {
-		promociones.add(promocion);
+		this.promociones.add(promocion);
 	}
-
-	public OrdenDeCompra terminarCompra() {
-		itemsDeCompra.forEach(item -> item.getProducto().reducirStock(item.getCantidad()));
-		return new OrdenDeCompra(LocalDate.now(), itemsDeCompra, subtotal, this.precioTotal());
-
-	}
-
-	public double precioTotal() {
-		if (promociones.size() > 0) {
-			return promociones.stream().mapToDouble(promocion -> {
-				try {
-					return promocion.aplicarPromocion(this);
-				} catch (NoSePuedeAplicarCuponException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return subtotal;
-			}).sum();
-		} else {
-			return subtotal;
-		}
-	}
-
-	public void contiene(Proveedor proveedor) {
-		itemsDeCompra.stream().map(item -> item.getProducto().getProveedor()).anyMatch(x -> x.equals(proveedor));
-	}
-
-	public void vaciarCarrito() {
-		itemsDeCompra.clear();
-	}
-
-
 }

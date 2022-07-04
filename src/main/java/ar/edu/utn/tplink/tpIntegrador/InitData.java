@@ -3,6 +3,7 @@ package ar.edu.utn.tplink.tpIntegrador;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,7 +19,11 @@ import ar.edu.utn.tplink.tpIntegrador.model.Administrador;
 import ar.edu.utn.tplink.tpIntegrador.model.CarritoDeCompra;
 import ar.edu.utn.tplink.tpIntegrador.model.CategoriaDeProducto;
 import ar.edu.utn.tplink.tpIntegrador.model.Cliente;
+import ar.edu.utn.tplink.tpIntegrador.model.CuponDescuento;
 import ar.edu.utn.tplink.tpIntegrador.model.ItemDeCompra;
+import ar.edu.utn.tplink.tpIntegrador.model.MedioDePago;
+import ar.edu.utn.tplink.tpIntegrador.model.Membresia;
+import ar.edu.utn.tplink.tpIntegrador.model.MetodoDePago;
 import ar.edu.utn.tplink.tpIntegrador.model.OrdenDeCompra;
 import ar.edu.utn.tplink.tpIntegrador.model.Producto;
 import ar.edu.utn.tplink.tpIntegrador.model.Promocion;
@@ -33,6 +38,7 @@ import ar.edu.utn.tplink.tpIntegrador.repository.IClienteRepository;
 import ar.edu.utn.tplink.tpIntegrador.repository.IItemDeCompraRepository;
 import ar.edu.utn.tplink.tpIntegrador.repository.IOrdenDeCompraRepository;
 import ar.edu.utn.tplink.tpIntegrador.repository.IProductoRepository;
+import ar.edu.utn.tplink.tpIntegrador.repository.IPromocionRepository;
 import ar.edu.utn.tplink.tpIntegrador.repository.IProveedorRepository;
 import ar.edu.utn.tplink.tpIntegrador.repository.IRolRepository;
 import ar.edu.utn.tplink.tpIntegrador.repository.IUsuarioRepository;
@@ -77,21 +83,15 @@ public class InitData implements CommandLineRunner {
 	@Autowired
 	RepositoryRestConfiguration config;
 	
+	@Autowired
+	IPromocionRepository repoPromocion;
+	
 	@Override
 	public void run(String... args) throws Exception {
 		config.exposeIdsFor(Producto.class,Proveedor.class,Vendedor.class,Cliente.class,CarritoDeCompra.class,ItemDeCompra.class,OrdenDeCompra.class,Administrador.class);
 		if(repoProducto.count() == 0) {
 			
-			CarritoDeCompra carrito1 = new CarritoDeCompra();
-			CarritoDeCompra carrito2 = new CarritoDeCompra(new ArrayList<ItemDeCompra>(), 0, new ArrayList<Promocion>());
-			CarritoDeCompra carrito3 = new CarritoDeCompra(new ArrayList<ItemDeCompra>(), 0, new ArrayList<Promocion>());
-			CarritoDeCompra carrito4 = new CarritoDeCompra(new ArrayList<ItemDeCompra>(), 0, new ArrayList<Promocion>());
 
-			List<CarritoDeCompra> carritos = List.of(carrito1,carrito2,carrito3,carrito4);
-			
-			carritos.stream().forEach(carritoDeCompra->{
-				repoCarrito.save(carritoDeCompra);
-			});
 			
 			//---------Administrador-------
 			
@@ -109,13 +109,13 @@ public class InitData implements CommandLineRunner {
 			
 			//Cliente cliente = new Cliente(nombre,apellido,documento,direccion,telefono,carritoDeCompra,esMiembro, comprasRealizadas);
 
-			Cliente cliente1 = new Cliente("Maria", "Hidalgo", "32133454","Maipu 123","112345653", carrito1 , true, new ArrayList<OrdenDeCompra>());
+			Cliente cliente1 = new Cliente("Maria", "Hidalgo", "32133454","Maipu 123","112345653", true, new ArrayList<OrdenDeCompra>());
 			
-			Cliente cliente2 = new Cliente("Juan", "Maita","37485939","Las Heras 345","1145642353",carrito2 , true, new ArrayList<OrdenDeCompra>());
+			Cliente cliente2 = new Cliente("Juan", "Maita","37485939","Las Heras 345","1145642353", true, new ArrayList<OrdenDeCompra>());
 			
-			Cliente cliente3= new Cliente("Brandon", "Maita", "43453564","Las Heras 345","1124564435",carrito3 , true, new ArrayList<OrdenDeCompra>());
+			Cliente cliente3= new Cliente("Brandon", "Maita", "43453564","Las Heras 345","1124564435", true, new ArrayList<OrdenDeCompra>());
 			
-			Cliente cliente4= new Cliente("Charo", "Torres", "345664323","Esmeralda 567","1133223432",carrito4 , true, new ArrayList<OrdenDeCompra>());
+			Cliente cliente4= new Cliente("Charo", "Torres", "345664323","Esmeralda 567","1133223432", true, new ArrayList<OrdenDeCompra>());
 
 			
 			List<Cliente> clientes = List.of(cliente1,cliente2,cliente3,cliente4);
@@ -129,9 +129,8 @@ public class InitData implements CommandLineRunner {
 			//Rol rol = new Rol(tiposuario)
 			
 			Rol rol1 = new Rol(TipoUsuario.ADMINISTRADOR);
-			Rol rol2 = new Rol(TipoUsuario.CLIENTE);
-			Rol rol3 = new Rol(TipoUsuario.VENDEDOR);
-			
+			Rol rol2 = new Rol(TipoUsuario.VENDEDOR);
+			Rol rol3 = new Rol(TipoUsuario.CLIENTE);
 			List<Rol> roles = List.of(rol1,rol2,rol3);
 			
 			roles.stream().forEach(rol->{
@@ -142,9 +141,9 @@ public class InitData implements CommandLineRunner {
 			
 			//Usuario usuario = new Usuario(nombreUsuario,mail,password,rol);
 
-			Usuario usuario1 = new Usuario("mariat","maria@gmail.com","1234",rol2);
-			Usuario usuario2 = new Usuario("lauraS","laura@gmail.com","12345",rol3);
-			Usuario usuario3 = new Usuario("luisH","luis@gmail.com","123456",rol1);
+			Usuario usuario1 = new Usuario("luisH","luis@gmail.com","123",rol1); 
+			Usuario usuario2 = new Usuario("lauraS","laura@gmail.com","1234",rol2);
+			Usuario usuario3 = new Usuario("mariaT","maria@gmail.com","12345",rol3);
 
 			
 			List<Usuario> usuarios = List.of(usuario1,usuario2,usuario3);
@@ -172,7 +171,22 @@ public class InitData implements CommandLineRunner {
 			});	
 			
 			
-
+			MedioDePago promoMedioDePago = new MedioDePago(MetodoDePago.EFECTIVO,0.10);
+			CuponDescuento cuponProveedor1 = new CuponDescuento (true,0.10,proveedor1);
+			CuponDescuento cuponProveedor2 = new CuponDescuento(true,0.05,proveedor2);
+			Membresia membresia = new Membresia(Arrays.asList(cliente1),0.10);
+			List<Promocion> promocionesIniciales=List.of(promoMedioDePago,cuponProveedor1,cuponProveedor2,membresia);
+			promocionesIniciales.stream().forEach(promocion -> {
+				repoPromocion.save(promocion);
+			});
+			
+			CarritoDeCompra carritoDeCompra1 = new CarritoDeCompra(Arrays.asList(promoMedioDePago,membresia),LocalDate.now(), MetodoDePago.EFECTIVO,cliente1);
+			CarritoDeCompra carritoDeCompra2 = new CarritoDeCompra(Arrays.asList(promoMedioDePago,membresia),LocalDate.now(), MetodoDePago.CREDITO,cliente2);
+			List<CarritoDeCompra> carritosIniciales=List.of(carritoDeCompra1,carritoDeCompra2);
+			carritosIniciales.stream().forEach(carrito -> {
+				repoCarrito.save(carrito);
+			});
+			
 			//---------Productos-----------
 			
 			// Producto producto = new Producto(nombre,descripcion,cantStock, categoria, precio,proveedor,imagen);
@@ -186,7 +200,7 @@ public class InitData implements CommandLineRunner {
 		    Producto producto7 = new Producto("Dulce de Leche de Almendras x 250gr - FELICES LAS VACAS","DULCE DE ALMENDRAS",2,CategoriaDeProducto.ALMACEN,277.46,proveedor1,"https://d3ugyf2ht6aenh.cloudfront.net/stores/001/434/490/products/dulce-de-leche-de-almendras-x-250g-felices-las-vacas-the-fresh-market1-25dea144388e8aa31e16461808851910-480-0.jpg");
 		    Producto producto8 = new Producto("Leche de Coco Original x 1 Lt S/TACC - DALE COCO","Leche de Coco - Dale Coco",5,CategoriaDeProducto.BEBIDAS,366.46,proveedor2,"https://d3ugyf2ht6aenh.cloudfront.net/stores/001/434/490/products/dale02_1-534a93dfce6af7795c16027096294438-1024-10241-89521a855fba99075016072756498951-1024-10241-b18c7ae4836deeb64116247160855692-480-0.jpg");
 		    Producto producto9 = new Producto("Galletita Cacao y Miel Orgánica x 170gr - CACHAFAZ","Galletas Orgánicas,100% harina integral orgánica. Cacao y Miel",23,CategoriaDeProducto.SNACKS,193.99,proveedor4,"https://d3ugyf2ht6aenh.cloudfront.net/stores/001/434/490/products/cach26_1-526a6ad601f84a4ef716027092798476-1024-10241-6216677d92b57f351316087691068941-480-0.jpg");
-		    Producto producto10 = new Producto("Pizzas de Masa Integral Fugazzeta x 290g - BEEPURE","",25,CategoriaDeProducto.ALMACEN,(float)578.11,proveedor3,"https://d3ugyf2ht6aenh.cloudfront.net/stores/001/434/490/products/pizza-integral-de-fugazzeta-beepure-the-fresh-market1-dc7886c4d547e558e916347818442025-480-0.jpg");
+		    Producto producto10 = new Producto("Pizzas de Masa Integral Fugazzeta x 290g - BEEPURE","",25,CategoriaDeProducto.ALMACEN,578.11,proveedor3,"https://d3ugyf2ht6aenh.cloudfront.net/stores/001/434/490/products/pizza-integral-de-fugazzeta-beepure-the-fresh-market1-dc7886c4d547e558e916347818442025-480-0.jpg");
 		    Producto producto11 = new Producto("Vegan Nuggets de Quinoa y Garbanzos x 300 gr - GREEN KITCHEN","Nuggets de Quinoa y Garbanzos",40,CategoriaDeProducto.ALMACEN,489.90,proveedor4,"https://d3ugyf2ht6aenh.cloudfront.net/stores/001/434/490/products/640-01-51081fd4217456524716276645843569-480-0.jpg");
 		    Producto producto12 = new Producto("Jugo Detox Remolacha, Naranja y Zanahoria x 1 Lts - CUARTO CRECIENTE","JUGO DETOX REMOLACHA",10,CategoriaDeProducto.BEBIDAS,205.50 ,proveedor3,"https://d3ugyf2ht6aenh.cloudfront.net/stores/001/434/490/products/jugo-detox-remolacha-zanahoria-naranja-cuarto-creciente-the-fresh-market1-556c9759dca7a452c116334777895905-480-0.jpg");
 		    Producto producto13 = new Producto("Not Chicken Nuggets x 400gr - NOTCO","Not Chicken Nuggets rebozado a base de proteina de arveja, garbanzo y haba congelado",3,CategoriaDeProducto.CONGELADOS,773.56,proveedor3,"https://d3ugyf2ht6aenh.cloudfront.net/stores/001/434/490/products/not-chicken-nuggets-not-co1-c9772ae49631aa0b7f16427883381769-480-0.jpg");

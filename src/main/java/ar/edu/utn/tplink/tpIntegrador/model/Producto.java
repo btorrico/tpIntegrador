@@ -22,6 +22,7 @@ public class Producto {
     @Enumerated(EnumType.STRING)
 	 CategoriaDeProducto categoria;
 	private double precio;
+
 	@ManyToOne
 	private Proveedor proveedor;
 
