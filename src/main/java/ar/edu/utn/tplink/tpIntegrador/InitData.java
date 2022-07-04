@@ -88,7 +88,7 @@ public class InitData implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-		config.exposeIdsFor(Producto.class,Proveedor.class,Vendedor.class,Cliente.class,CarritoDeCompra.class,ItemDeCompra.class,OrdenDeCompra.class,Administrador.class);
+		config.exposeIdsFor(Producto.class,Proveedor.class,Vendedor.class,Cliente.class,CarritoDeCompra.class,ItemDeCompra.class,OrdenDeCompra.class,Administrador.class,Promocion.class);
 		if(repoProducto.count() == 0) {
 			
 

@@ -7,6 +7,6 @@ import ar.edu.utn.tplink.tpIntegrador.model.Promocion;
 
 
 @RepositoryRestResource(path ="promociones")
-public interface IPromocionRepository extends PagingAndSortingRepository<Promocion,Long> {
+public interface IPromocionRepository extends PagingAndSortingRepository<Promocion,Integer> {
     
 }

@@ -50,7 +50,7 @@ public class PromocionControllerComplement {
 	//Busqueda Promocion
 	@Transactional
 	@GetMapping("/promociones/{id}")
-	public ResponseEntity<Promocion> obtenerPromocionPorId(@PathVariable Long id){
+	public ResponseEntity<Promocion> obtenerPromocionPorId(@PathVariable Integer id){
 			Promocion promocion = repoPromocion.findById(id)
 					            .orElseThrow(() -> new ResourceNotFoundException("No existe la promocion con el ID : " + id));
 			return ResponseEntity.ok(promocion);
@@ -59,7 +59,7 @@ public class PromocionControllerComplement {
 	//Modificacion Promocion
 	@Transactional
 	@PutMapping("/promociones/{id}")
-	public ResponseEntity<Promocion> actualizarPromocion(@PathVariable Long id,@RequestBody Promocion detallesPromocion){
+	public ResponseEntity<Promocion> actualizarPromocion(@PathVariable Integer id,@RequestBody Promocion detallesPromocion){
 		Promocion promocion = repoPromocion.findById(id)
 				            .orElseThrow(() -> new ResourceNotFoundException("No existe la promocion con el ID : " + id));
 		
@@ -78,7 +78,7 @@ public class PromocionControllerComplement {
 	//Baja Promocion
 	@DeleteMapping("/promociones/{id}")
 	@Transactional
-	public ResponseEntity<Map<String,Boolean>> eliminarPromocion(@PathVariable Long id){
+	public ResponseEntity<Map<String,Boolean>> eliminarPromocion(@PathVariable Integer id){
 		Promocion promocion = repoPromocion.findById(id)
 				            .orElseThrow(() -> new ResourceNotFoundException("No existe la promocion con el ID : " + id));
 		
